@@ -52,4 +52,6 @@ Ordering, Grouping and Aggregate Functions
 1) Order By (Asc or Desc)
 2) Group By (Having)
 3) Aggregate Functions -> Count, Max, Min, Average, Sum
+4) Distinct
 */
+-- Sql is a Declarative (Just Describe Results) Language not Imperative (Full Description) or Procedural.
