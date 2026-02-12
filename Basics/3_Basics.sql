@@ -1,0 +1,24 @@
+-- CTE'S -    Common Table Expressions
+-- It is a Temporary Result Set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement.
+-- It is defined using the WITH keyword, followed by the CTE name and the AS keyword, and then the CTE query enclosed in parentheses.
+-- CTEs can be used to simplify complex queries, improve readability, and enable recursive queries.
+-- Example:
+-- WITH CTE_Orders AS (
+--     SELECT 
+--         OrderID,
+--         CustomerID,
+--         OrderDate
+--     FROM 
+--         Orders
+--     WHERE 
+--         OrderDate > '2024-01-01'
+-- )
+-- SELECT 
+--     o.OrderID,
+--     c.CustomerName
+-- FROM 
+--     CTE_Orders o
+-- JOIN 
+--     Customers c ON o.CustomerID = c.CustomerID;
+-- -- This query uses a CTE named CTE_Orders to filter orders placed after January 1, 2024, and then joins the CTE with the Customers table to retrieve the customer names associated with those orders.
+
