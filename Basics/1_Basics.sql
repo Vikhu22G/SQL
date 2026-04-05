@@ -79,4 +79,8 @@ Join Vs Union – Union is not about relationships, but only when tables have si
 Adding Updating and Deleting Data
 Create, Read, Update and Delete (CRUD)
 Safe Mode with Delete
+
+DDL – Select, Insert, Update, Delete, From, Where, Join, Order By, Group By, Having
+DML – Create, Alter, Drop, Truncate
+DCL – Grant, Revoke
 */
