@@ -45,3 +45,20 @@ WITH RECURSIVE pattern AS ( SELECT 1 AS n UNION ALL SELECT n + 1 FROM pattern WH
 
 With p(n) as ( select 1 as n union all select n+1 from p where n<20 ) select replicate(' *',n) from p;
 --
+
+-- Hackerrank
+-- Occupations
+WITH numbered AS ( SELECT Name, Occupation, ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS rn FROM Occupations) 
+SELECT MAX(CASE WHEN Occupation = 'Doctor' THEN Name END) AS Doctor, MAX(CASE WHEN Occupation = 'Professor' THEN Name END) AS Professor, MAX(CASE WHEN Occupation = 'Singer' THEN Name END) AS Singer, MAX(CASE WHEN Occupation = 'Actor' THEN Name END) AS Actor FROM numbered GROUP BY rn ORDER BY rn;
+
+
+-- BST
+select distinct T1.N,
+case
+    when T1.P is NULL then "Root"
+    when T1.N = T2.P then "Inner"
+    else "Leaf"
+end  
+from BST as T1
+left join BST as T2 ON T1.N=T2.P
+order by T1.N;
