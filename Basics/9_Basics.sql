@@ -52,7 +52,7 @@ WITH numbered AS ( SELECT Name, Occupation, ROW_NUMBER() OVER (PARTITION BY Occu
 SELECT MAX(CASE WHEN Occupation = 'Doctor' THEN Name END) AS Doctor, MAX(CASE WHEN Occupation = 'Professor' THEN Name END) AS Professor, MAX(CASE WHEN Occupation = 'Singer' THEN Name END) AS Singer, MAX(CASE WHEN Occupation = 'Actor' THEN Name END) AS Actor FROM numbered GROUP BY rn ORDER BY rn;
 
 
--- BST
+-- BST (Need to use a self left join)
 select distinct T1.N,
 case
     when T1.P is NULL then "Root"
@@ -62,3 +62,75 @@ end
 from BST as T1
 left join BST as T2 ON T1.N=T2.P
 order by T1.N;
+
+-- New Companies
+SELECT Employee.company_code, founder, COUNT(DISTINCT(lead_manager_code)), COUNT(DISTINCT(senior_manager_code)), COUNT(DISTINCT(manager_code)), COUNT(DISTINCT(employee_code)) FROM Employee LEFT JOIN Company ON Employee.company_code = Company.company_code GROUP BY company_code, founder
+
+-- Weather Observation 18 (Manhattan Distance)
+SELECT
+    ROUND(ABS(MAX(LAT_N)  - MIN(LAT_N))
+        + ABS(MAX(LONG_W) - MIN(LONG_W)), 4)
+FROM 
+    STATION;
+
+-- Weather Obhervation 19 - Euclidean Distance
+SELECT ROUND(SQRT(POWER(MIN(LAT_N)-MAX(LAT_N),2)+POWER(MIN(LONG_W)-MAX(LONG_W),2)),4)
+FROM STATION;
+
+-- Weather Observation 20 (Median)
+Select round(avg(lat_n),4) from (
+    Select lat_n, row_number() over (order by lat_n) as rn, 
+    count(*) over() as total from station
+) as cool 
+where rn in ((floor(total+1)/2),(floor(total+2)/2));
+
+-- The Report
+SELECT IF(GRADES.GRADE>=8, STUDENTS.NAME, NULL),GRADES.GRADE, STUDENTS.MARKS
+FROM GRADES, STUDENTS
+WHERE STUDENTS.MARKS BETWEEN GRADES.MIN_MARK AND GRADES.MAX_MARK
+ORDER BY GRADES.GRADE DESC, STUDENTS.NAME;
+
+-- Top Competitors
+SELECT H.HACKER_ID, H.NAME
+FROM HACKERS H
+INNER JOIN SUBMISSIONS S
+ON H.HACKER_ID = S.HACKER_ID
+INNER JOIN CHALLENGES C
+ON S.CHALLENGE_ID = C.CHALLENGE_ID
+INNER JOIN DIFFICULTY D
+ON C.DIFFICULTY_LEVEL = D.DIFFICULTY_LEVEL
+WHERE S.SCORE = D.SCORE AND C.DIFFICULTY_LEVEL = D.DIFFICULTY_LEVEL
+GROUP BY H.HACKER_ID, H.NAME
+HAVING COUNT(S.HACKER_ID) > 1
+ORDER BY COUNT(S.HACKER_ID) DESC, S.HACKER_ID ASC;
+
+-- Olivanders Inventory
+SELECT W.ID, P.AGE, W.COINS_NEEDED, W.POWER 
+FROM WANDS AS W
+JOIN WANDS_PROPERTY AS P
+ON (W.CODE = P.CODE) 
+WHERE P.IS_EVIL = 0 AND W.COINS_NEEDED = (SELECT MIN(COINS_NEEDED) 
+                                          FROM WANDS AS X
+                                          JOIN WANDS_PROPERTY AS Y 
+                                          ON (X.CODE = Y.CODE) 
+                                          WHERE X.POWER = W.POWER AND Y.AGE = P.AGE) 
+ORDER BY W.POWER DESC, P.AGE DESC;
+
+-- Contest Leaderboard
+SELECT h.hacker_id, h.name, t1.total_score
+  FROM (
+        SELECT hacker_id, SUM(max_score) AS total_score
+          FROM (
+                SELECT hacker_id, MAX(score) AS max_score
+                  FROM Submissions
+                GROUP BY hacker_id, challenge_id
+               ) t
+        GROUP BY hacker_id
+       ) t1
+  JOIN Hackers h
+    ON h.hacker_id = t1.hacker_id
+ WHERE t1.total_score <> 0
+ ORDER BY total_score DESC, hacker_id;
+ 
+-- Sql Project Planning
+
