@@ -109,6 +109,7 @@ SELECT W.ID, P.AGE, W.COINS_NEEDED, W.POWER
 FROM WANDS AS W
 JOIN WANDS_PROPERTY AS P
 ON (W.CODE = P.CODE) 
+
 WHERE P.IS_EVIL = 0 AND W.COINS_NEEDED = (SELECT MIN(COINS_NEEDED) 
                                           FROM WANDS AS X
                                           JOIN WANDS_PROPERTY AS Y 
@@ -131,6 +132,6 @@ SELECT h.hacker_id, h.name, t1.total_score
     ON h.hacker_id = t1.hacker_id
  WHERE t1.total_score <> 0
  ORDER BY total_score DESC, hacker_id;
- 
+
 -- Sql Project Planning
 
