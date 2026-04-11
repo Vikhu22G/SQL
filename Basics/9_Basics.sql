@@ -117,7 +117,7 @@ WHERE P.IS_EVIL = 0 AND W.COINS_NEEDED = (SELECT MIN(COINS_NEEDED)
                                           WHERE X.POWER = W.POWER AND Y.AGE = P.AGE) 
 ORDER BY W.POWER DESC, P.AGE DESC;
 
--- Contest Leaderboard
+-- Contest Leaderboard (Make sure to group and take max for the same challenge and hacker)
 SELECT h.hacker_id, h.name, t1.total_score
   FROM (
         SELECT hacker_id, SUM(max_score) AS total_score
